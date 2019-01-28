@@ -14,6 +14,19 @@ export interface Hero extends ApiResponse {
   legs: number
 }
 
+export interface Animal {
+  name: string,
+  happy: boolean,
+}
+
+export interface Monkey extends Animal {
+  banana: Banana
+}
+
+export interface Banana {
+  isRotten: boolean
+}
+
 // This type is basically shorthand for `{ [key: string]: any }`. Feel free to replace `any` with
 // the expected return type of your API response.
 export type ApiResponse = Record<string, any>
@@ -29,7 +42,9 @@ export const enum HeroesActionTypes {
   FETCH_SUCCESS = '@@heroes/FETCH_SUCCESS',
   FETCH_ERROR = '@@heroes/FETCH_ERROR',
   SELECT_HERO = '@@heroes/SELECT_HERO',
-  SELECTED = '@@heroes/SELECTED'
+  SELECTED = '@@heroes/SELECTED',
+  CHANGE_BANANA = '@@heroes/CHANGE_BANANA',
+  CHANGE_MOOD = '@@heroes/CHANGE_MOOD'
 }
 
 // Declare state types with `readonly` modifier to get compile time immutability.
@@ -38,4 +53,5 @@ export interface HeroesState {
   readonly loading: boolean
   readonly data: Hero[]
   readonly errors?: string
+  readonly monkey: Monkey
 }

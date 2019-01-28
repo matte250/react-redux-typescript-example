@@ -6,13 +6,14 @@ import HeroesIndexPage from './heroes/index'
 import ShowHeroesPage from './heroes/show'
 
 import { ApplicationState, ConnectedReduxProps } from '../store'
-import { Hero } from '../store/heroes/types'
+import { Hero, Monkey } from '../store/heroes/types'
 
 // Separate state props + dispatch props to their own interfaces.
 interface PropsFromState {
   loading: boolean
   data: Hero[]
   errors?: string
+  monkey: Monkey
 }
 
 // Combine both state + dispatch props - as well as any props we want to pass - in a union type.
@@ -37,7 +38,8 @@ class HeroesPage extends React.Component<AllProps> {
 const mapStateToProps = ({ heroes }: ApplicationState) => ({
   loading: heroes.loading,
   errors: heroes.errors,
-  data: heroes.data
+  data: heroes.data,
+  monkey: heroes.monkey
 })
 
 // Now let's connect our component!

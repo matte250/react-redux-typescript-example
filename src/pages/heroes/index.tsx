@@ -11,8 +11,8 @@ import LoadingOverlayInner from '../../components/data/LoadingOverlayInner'
 import LoadingSpinner from '../../components/data/LoadingSpinner'
 
 import { ApplicationState, ConnectedReduxProps } from '../../store'
-import { Hero } from '../../store/heroes/types'
-import { fetchRequest } from '../../store/heroes/actions'
+import { Hero, Monkey } from '../../store/heroes/types'
+import { fetchRequest, changeBanana, changeMood } from '../../store/heroes/actions'
 import { Dispatch } from 'redux';
 
 // Separate state props + dispatch props to their own interfaces.
@@ -20,11 +20,14 @@ interface PropsFromState {
   loading: boolean
   data: Hero[]
   errors?: string
+  monkey: Monkey
 }
 
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface PropsFromDispatch {
   fetchRequest: typeof fetchRequest
+  changeBanana: typeof changeBanana
+  changeMood: typeof changeMood
 }
 
 // Combine both state + dispatch props - as well as any props we want to pass - in a union type.
@@ -54,11 +57,27 @@ class HeroesIndexPage extends React.Component<AllProps> {
             <p>
               <small>*in last 30 days</small>
             </p>
+            {this.renderMonkey()}
             {this.renderData()}
           </TableWrapper>
         </Container>
       </Page>
     )
+  }
+  private renderMonkey() {
+    const { monkey, changeBanana, changeMood } = this.props
+    return (
+      <div>
+        <img src={monkey.happy ?
+          'https://i.pinimg.com/originals/88/f3/b2/88f3b21899404d50d236d75c5d37b5b7.jpg' :
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ406r-sXaK1EhoHgB5wyWCvnBjvZQKAo9POcv9ugKqLxWqlC5h'}
+          width={250} />
+        <div onClick={changeBanana}>
+          {monkey && (<p>{monkey.name}'s banana is {monkey.banana.isRotten ? 'rotten' : 'fresh'}.</p>)}
+        </div>
+        <small onClick={changeMood}>{monkey.name} is {monkey.happy ? 'happy' : 'sad'} because of this.</small>
+      </div>
+    );
   }
 
   private renderData() {
@@ -97,13 +116,16 @@ class HeroesIndexPage extends React.Component<AllProps> {
 const mapStateToProps = ({ heroes }: ApplicationState) => ({
   loading: heroes.loading,
   errors: heroes.errors,
-  data: heroes.data
+  data: heroes.data,
+  monkey: heroes.monkey,
 })
 
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  fetchRequest: () => dispatch(fetchRequest())
+  fetchRequest: () => dispatch(fetchRequest()),
+  changeBanana: () => dispatch(changeBanana()),
+  changeMood: () => dispatch(changeMood()),
 })
 
 // Now let's connect our component!

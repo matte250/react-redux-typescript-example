@@ -10,3 +10,5 @@ export const fetchRequest = () => action(HeroesActionTypes.FETCH_REQUEST)
 // type them properly as well.
 export const fetchSuccess = (data: Hero[]) => action(HeroesActionTypes.FETCH_SUCCESS, data)
 export const fetchError = (message: string) => action(HeroesActionTypes.FETCH_ERROR, message)
+export const changeBanana = () => action(HeroesActionTypes.CHANGE_BANANA)
+export const changeMood = () => action(HeroesActionTypes.CHANGE_MOOD)
